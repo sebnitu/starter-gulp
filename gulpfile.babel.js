@@ -1,0 +1,251 @@
+'use strict'
+
+/**
+ * Imports
+ */
+import gulp from 'gulp'
+import gutil from 'gulp-util'
+import fs from 'fs'
+import path from 'path'
+import del from 'del'
+import Q from 'q'
+import rename from 'gulp-rename'
+import sourcemaps from 'gulp-sourcemaps'
+import source from 'vinyl-source-stream'
+import buffer from 'vinyl-buffer'
+import log from 'gulplog'
+
+// CSS
+import sass from 'gulp-sass'
+import postcss from 'gulp-postcss'
+import autoprefixer from 'autoprefixer'
+
+// JS
+import browserify from 'browserify'
+import babel from 'gulp-babel'
+import concat from 'gulp-concat'
+import uglify from 'gulp-uglify'
+
+// Img
+import imagemin from 'gulp-imagemin'
+import svgSymbols from 'gulp-svg-symbols'
+
+// Icons
+import feather from 'feather-icons'
+
+/**
+ * Paths
+ */
+const paths = {
+  src: 'src/',
+  dest: 'dist/',
+  icons: 'node_modules/feather-icons/dist/icons/',
+}
+
+/**
+ * Clean
+ */
+gulp.task('clean:css', () => {
+  return del(paths.dest + 'css')
+})
+
+gulp.task('clean:js', () => {
+  return del(paths.dest + 'js')
+})
+
+gulp.task('clean:img', function () {
+  return del(paths.dest + 'img')
+})
+
+gulp.task('clean:icons', function () {
+  return del(paths.dest + 'icons')
+})
+
+gulp.task('clean:svg', function () {
+  return del(paths.dest + 'svg')
+})
+
+gulp.task('clean', () => {
+  return del(paths.dest)
+})
+
+/**
+ * CSS
+ */
+gulp.task('css:dev', () => {
+  const src = paths.src + 'scss/imports.scss'
+  const dest = paths.dest + 'css/'
+  const css = gulp.src(src)
+    .pipe(sourcemaps.init())
+    .pipe(sass({
+      outputStyle: 'expanded'
+    })
+    .on('error', sass.logError))
+    .pipe(postcss([
+      autoprefixer({ browsers: ['last 2 versions', '> 2%'] })
+    ]))
+    .pipe(rename('styles.css'))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(dest))
+
+  return css
+})
+
+gulp.task('css:prod', () => {
+  const src = paths.src + 'scss/imports.scss'
+  const dest = paths.dest + 'css/'
+  const css = gulp.src(src)
+    .pipe(sourcemaps.init())
+    .pipe(sass({
+      outputStyle: 'compressed'
+    })
+    .on('error', sass.logError))
+    .pipe(postcss([
+      autoprefixer({ browsers: ['last 2 versions', '> 2%'] })
+    ]))
+    .pipe(rename('styles.min.css'))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(dest))
+
+  return css
+})
+
+gulp.task('css', ['css:dev', 'css:prod'])
+
+/**
+ * JS
+ */
+gulp.task('js:dev', () => {
+  const src = paths.src + 'js/scripts.js'
+  const dest = paths.dest + 'js/'
+  const b = browserify({
+    entries: src,
+    debug: true
+  })
+  const js = b.bundle()
+    .pipe(source(src))
+    .pipe(buffer())
+    .pipe(sourcemaps.init())
+    .pipe(babel())
+    .pipe(concat('scripts.js'))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(dest))
+
+  return js
+})
+
+gulp.task('js:prod', () => {
+  const src = paths.src + 'js/scripts.js'
+  const dest = paths.dest + 'js/'
+  const b = browserify({
+    entries: src,
+    debug: true
+  })
+  const js = b.bundle()
+    .pipe(source(src))
+    .pipe(buffer())
+    .pipe(sourcemaps.init())
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(concat('scripts.min.js'))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(dest))
+
+  return js
+})
+
+gulp.task('js', ['js:dev', 'js:prod'])
+
+/**
+ * Img
+ */
+gulp.task('img', function() {
+  const src = paths.src + 'img/**/*'
+  const dest = paths.dest + 'img/'
+  return gulp.src(src)
+    .pipe(imagemin({ optimizationLevel: 5 }))
+    .pipe(gulp.dest(dest))
+})
+
+/**
+ * Icons
+ */
+gulp.task('icons', function() {
+
+  // Set paths
+  const src = paths.icons + '*.svg'
+  const dest = paths.dest + 'icons/'
+
+  // Setup our promise and set item processed to 0
+  var deferred = Q.defer()
+  var itemsProcessed = 0
+
+  // Get our icons array
+  var icons = fs.readdirSync(paths.icons)
+
+  // Create the direcotry if it doesn't exist
+  if (!fs.existsSync(dest)){
+    fs.mkdirSync(dest)
+  }
+
+  // Loop through our icons
+  icons.forEach(icon => {
+    icon = path.basename(icon, '.svg')
+    var svg = feather.icons[icon].toSvg({
+      class: 'icon icon-' + icon
+    })
+
+    // Write our icons to file
+    fs.writeFile(dest + icon + '.svg', svg, function (err) {
+      if (err) { console.error(err) }
+    })
+
+    // Add count to processed items
+    itemsProcessed++
+
+    // If we're done, set deferred promise to resolved
+    if(itemsProcessed === icons.length) {
+      deferred.resolve()
+    }
+  })
+
+  // Return our promise
+  return deferred.promise
+})
+
+/**
+ * SVG
+ */
+gulp.task('svg', function() {
+  const src = paths.dest + 'icons/*.svg'
+  const dest = paths.dest + 'svg/'
+  return gulp.src( src )
+    .pipe(svgSymbols({
+      id: 'icon-%f',
+      svgAttrs: {
+        class: 'svg-symbols'
+      },
+      templates: ['default-svg']
+    }))
+    .pipe(rename('symbols.svg'))
+    .pipe(gulp.dest( dest ))
+})
+
+/**
+ * Bulk Tasks
+ */
+gulp.task('all', ['css', 'js', 'img'])
+
+/**
+ * Watch Task
+ */
+gulp.task('watch', function() {
+  gulp.watch(paths.src + 'scss/**/*', ['css'])
+  gulp.watch(paths.src + 'js/**/*', ['js'])
+})
+
+/**
+ * Default task
+ * Builds everything and then initiates the watch task
+ */
+gulp.task('default', ['all', 'watch'])

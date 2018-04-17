@@ -1,0 +1,44 @@
+{
+  "name": "starter-gulp",
+  "version": "1.0.0",
+  "description": "Starter files for creating basic gulp build scripts.",
+  "author": {
+    "name": "Sebastian Nitu",
+    "email": "me@sebnitu.com",
+    "url": "http://sebnitu.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sebnitu/"
+  },
+  "license": "MIT",
+  "files": [
+    "dist",
+    "src",
+    ".babelrc",
+    "gulpfile.babel.js"
+  ],
+  "devDependencies": {
+    "autoprefixer": "^8.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "browserify": "^16.2.0",
+    "del": "^3.0.0",
+    "feather-icons": "^4.5.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-postcss": "^7.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.3",
+    "gulp-svg-symbols": "^3.0.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "gulplog": "^1.0.0",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0"
+  }
+}
