@@ -1,4 +1,4 @@
-var utility = function () {
+export default function () {
 
   'use strict'
 
@@ -134,5 +134,3 @@ var utility = function () {
 
   return api
 }
-
-module.exports = utility

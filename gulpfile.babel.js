@@ -22,8 +22,7 @@ import autoprefixer from 'autoprefixer'
 
 // JS
 import browserify from 'browserify'
-import babel from 'gulp-babel'
-import concat from 'gulp-concat'
+import babel from 'babelify'
 import uglify from 'gulp-uglify'
 
 // Img
@@ -39,35 +38,17 @@ import feather from 'feather-icons'
 const paths = {
   src: 'src/',
   dest: 'dist/',
-  icons: 'node_modules/feather-icons/dist/icons/',
+  search: {
+    scss: [
+      'src/scss/',
+      'node_modules/'
+    ],
+    js: [
+      'src/js/',
+      'node_modules/'
+    ]
+  }
 }
-
-/**
- * Clean
- */
-gulp.task('clean:css', () => {
-  return del(paths.dest + 'css')
-})
-
-gulp.task('clean:js', () => {
-  return del(paths.dest + 'js')
-})
-
-gulp.task('clean:img', function () {
-  return del(paths.dest + 'img')
-})
-
-gulp.task('clean:icons', function () {
-  return del(paths.dest + 'icons')
-})
-
-gulp.task('clean:svg', function () {
-  return del(paths.dest + 'svg')
-})
-
-gulp.task('clean', () => {
-  return del(paths.dest)
-})
 
 /**
  * CSS
@@ -78,7 +59,8 @@ gulp.task('css:dev', () => {
   const css = gulp.src(src)
     .pipe(sourcemaps.init())
     .pipe(sass({
-      outputStyle: 'expanded'
+      outputStyle: 'expanded',
+      includePaths: paths.search.scss
     })
     .on('error', sass.logError))
     .pipe(postcss([
@@ -97,7 +79,8 @@ gulp.task('css:prod', () => {
   const css = gulp.src(src)
     .pipe(sourcemaps.init())
     .pipe(sass({
-      outputStyle: 'compressed'
+      outputStyle: 'compressed',
+      includePaths: paths.search.scss
     })
     .on('error', sass.logError))
     .pipe(postcss([
@@ -116,18 +99,19 @@ gulp.task('css', ['css:dev', 'css:prod'])
  * JS
  */
 gulp.task('js:dev', () => {
-  const src = paths.src + 'js/scripts.js'
+  const src = paths.src + 'js/app.js'
   const dest = paths.dest + 'js/'
   const b = browserify({
     entries: src,
+    paths: paths.search.js,
     debug: true
-  })
+  }).transform(babel)
   const js = b.bundle()
     .pipe(source(src))
     .pipe(buffer())
     .pipe(sourcemaps.init())
-    .pipe(babel())
-    .pipe(concat('scripts.js'))
+    .on('error', log.error)
+    .pipe(rename('scripts.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dest))
 
@@ -135,19 +119,20 @@ gulp.task('js:dev', () => {
 })
 
 gulp.task('js:prod', () => {
-  const src = paths.src + 'js/scripts.js'
+  const src = paths.src + 'js/app.js'
   const dest = paths.dest + 'js/'
   const b = browserify({
     entries: src,
+    paths: paths.search.js,
     debug: true
-  })
+  }).transform(babel)
   const js = b.bundle()
     .pipe(source(src))
     .pipe(buffer())
     .pipe(sourcemaps.init())
-    .pipe(babel())
     .pipe(uglify())
-    .pipe(concat('scripts.min.js'))
+    .on('error', log.error)
+    .pipe(rename('scripts.min.js'))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dest))
 
@@ -173,7 +158,7 @@ gulp.task('img', function() {
 gulp.task('icons', function() {
 
   // Set paths
-  const src = paths.icons + '*.svg'
+  const src = 'node_modules/feather-icons/dist/icons/*.svg'
   const dest = paths.dest + 'icons/'
 
   // Setup our promise and set item processed to 0
@@ -181,7 +166,7 @@ gulp.task('icons', function() {
   var itemsProcessed = 0
 
   // Get our icons array
-  var icons = fs.readdirSync(paths.icons)
+  var icons = fs.readdirSync('node_modules/feather-icons/dist/icons/')
 
   // Create the direcotry if it doesn't exist
   if (!fs.existsSync(dest)){
@@ -232,12 +217,39 @@ gulp.task('svg', function() {
 })
 
 /**
- * Bulk Tasks
+ * Clean
+ */
+gulp.task('clean:css', () => {
+  return del(paths.dest + 'css')
+})
+
+gulp.task('clean:js', () => {
+  return del(paths.dest + 'js')
+})
+
+gulp.task('clean:img', function () {
+  return del(paths.dest + 'img')
+})
+
+gulp.task('clean:icons', function () {
+  return del(paths.dest + 'icons')
+})
+
+gulp.task('clean:svg', function () {
+  return del(paths.dest + 'svg')
+})
+
+gulp.task('clean', () => {
+  return del(paths.dest)
+})
+
+/**
+ * Bulk
  */
 gulp.task('all', ['css', 'js', 'img'])
 
 /**
- * Watch Task
+ * Watch
  */
 gulp.task('watch', function() {
   gulp.watch(paths.src + 'scss/**/*', ['css'])
@@ -245,7 +257,7 @@ gulp.task('watch', function() {
 })
 
 /**
- * Default task
+ * Default
  * Builds everything and then initiates the watch task
  */
 gulp.task('default', ['all', 'watch'])

@@ -1,34 +1,24 @@
 var utility = require('./utility.js')
 var u = new utility()
 
-var modal = function() {
+export default function() {
 
   'use strict'
 
+  // Init variables
   var api = {}
   var settings
+
+  // Default settings
   var defaults = {
-    classTrigger: 'modal__trigger',
-    classModal: 'modal',
-    classDialog: 'modal__dialog',
-    classActive: 'is-active'
+    classTrigger: 'trigger',
+    classTarget: 'target',
+    classActive: 'active'
   }
 
-  var open = function(target) {
-    u.addClass(target, settings.classActive)
-  }
-
-  var close = function() {
-    var modals = document.querySelectorAll('.' + settings.classModal)
-    for (var i = 0; i < modals.length; ++i) {
-      u.removeClass(modals[i], settings.classActive)
-    }
-  }
-
+  // Private functions
   var run = function() {
     var trigger = event.target.closest('.' + settings.classTrigger)
-    var modal = event.target.closest('.' + settings.classModal)
-    var dialog = event.target.closest('.' + settings.classDialog)
 
     if (trigger) {
       close()
@@ -37,11 +27,10 @@ var modal = function() {
         open(document.getElementById(dataModal))
       }
       event.preventDefault()
-    } else if (modal && !dialog) {
-      close()
     }
   }
 
+  // Public functions
   api.init = function(options) {
     api.destroy()
     settings = u.extend( defaults, options || {} )
@@ -53,7 +42,6 @@ var modal = function() {
     document.removeEventListener('click', run, false)
   }
 
+  // Return the application program interface
   return api
 }
-
-module.exports = modal
