@@ -1,8 +1,4 @@
-export default function () {
-
-  'use strict'
-
-  var api = {}
+export default class {
 
   /**
    * Checks if an element has a class or not
@@ -10,9 +6,9 @@ export default function () {
    * @param {String} || {Array} Class(es) to check
    * @returns {Boolean} Returns true if class exists on element, otherwise false
    */
-  api.hasClass = function ( el, c ) {
+  static hasClass( el, c ) {
 
-    c = api.toArray(c)
+    c = this.toArray(c)
 
     return c.every( function ( c ) {
       return el.classList.contains(c)
@@ -24,9 +20,9 @@ export default function () {
    * @param {Element} Element to add class(es) on
    * @param {String} || {Array} Class(es) to add
    */
-  api.addClass = function ( el, c ) {
+  static addClass( el, c ) {
 
-    c = api.toArray(c)
+    c = this.toArray(c)
 
     c.forEach( function ( c ) {
       el.classList.add( c )
@@ -37,9 +33,9 @@ export default function () {
    * @param {Element} Element to remove class(es) from
    * @param {String} || {Array} Class(es) to remove
    */
-  api.removeClass = function ( el, c ) {
+  static removeClass( el, c ) {
 
-    c = api.toArray(c)
+    c = this.toArray(c)
 
     c.forEach( function ( c ) {
       el.classList.remove( c )
@@ -51,9 +47,9 @@ export default function () {
    * @param {Element} Element to toggle class(es) on
    * @param {String} || {Array} Class(es) to toggle
    */
-  api.toggleClass = function ( el, c ) {
+  static toggleClass( el, c ) {
 
-    c = api.toArray(c)
+    c = this.toArray(c)
 
     c.forEach( function ( c ) {
       el.classList.toggle(c)
@@ -67,8 +63,8 @@ export default function () {
    * @param {String} || {Array} Class(es) to check for
    * @return {Element} Closest parent element
    */
-  api.closest = function ( el, c ) {
-    while ((el = el.parentElement) && !api.hasClass(el, c))
+  static closest( el, c ) {
+    while ((el = el.parentElement) && !this.hasClass(el, c))
     return el
   }
 
@@ -78,7 +74,7 @@ export default function () {
    * @param {String} || {Array} String to convert to an array
    * @return {Array} Return the converted array
    */
-  api.toArray = function(string) {
+  static toArray(string) {
 
     var array = []
 
@@ -100,7 +96,7 @@ export default function () {
    * @param {Object} The objects to merge together; each overriding the next
    * @returns {Object} Merged values of defaults and options
    */
-  api.extend = function () {
+  static extend() {
 
     var extended = {}
     var deep = false
@@ -112,7 +108,7 @@ export default function () {
       i++
     }
 
-    var merge = function ( obj ) {
+    var merge = function( obj ) {
       for ( var prop in obj ) {
         if ( Object.prototype.hasOwnProperty.call( obj, prop ) ) {
           if ( deep && Object.prototype.toString.call(obj[prop]) === '[object Object]' ) {
@@ -132,5 +128,4 @@ export default function () {
     return extended
   }
 
-  return api
 }

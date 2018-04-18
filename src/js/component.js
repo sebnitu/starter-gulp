@@ -1,5 +1,4 @@
-var utility = require('./utility.js')
-var u = new utility()
+import u from './utility.js'
 
 export default function() {
 
