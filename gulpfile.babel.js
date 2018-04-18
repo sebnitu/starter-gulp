@@ -1,7 +1,15 @@
+/**
+ * Gulpfile with Babel
+ * ---
+ * This is where you define all your project tasks. These can be written in ES6+
+ * and it will be read and run using babel. Make sure to have a `.babelrc` with
+ * whatever presets and settings you need.
+ */
+
 'use strict'
 
 /**
- * Imports
+ * Packages
  */
 
 // Global
