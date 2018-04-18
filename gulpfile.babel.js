@@ -214,10 +214,10 @@ gulp.task('icons', function() {
 })
 
 /**
- * SVG
+ * Symbols
  */
 
-gulp.task('svg', function() {
+gulp.task('symbols', function() {
   const src = paths.dest + 'icons/*.svg'
   const dest = paths.dest + 'svg/'
   return gulp.src( src )
