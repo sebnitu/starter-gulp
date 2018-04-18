@@ -3,6 +3,8 @@
 /**
  * Imports
  */
+
+// Global
 import gulp from 'gulp'
 import gutil from 'gulp-util'
 import fs from 'fs'
@@ -35,6 +37,7 @@ import feather from 'feather-icons'
 /**
  * Paths
  */
+
 const paths = {
   src: 'src/',
   dest: 'dist/',
@@ -53,6 +56,7 @@ const paths = {
 /**
  * CSS
  */
+
 gulp.task('css:dev', () => {
   const src = paths.src + 'scss/imports.scss'
   const dest = paths.dest + 'css/'
@@ -98,6 +102,7 @@ gulp.task('css', ['css:dev', 'css:prod'])
 /**
  * JS
  */
+
 gulp.task('js:dev', () => {
   const src = paths.src + 'js/app.js'
   const dest = paths.dest + 'js/'
@@ -144,6 +149,7 @@ gulp.task('js', ['js:dev', 'js:prod'])
 /**
  * Img
  */
+
 gulp.task('img', function() {
   const src = paths.src + 'img/**/*'
   const dest = paths.dest + 'img/'
@@ -155,6 +161,7 @@ gulp.task('img', function() {
 /**
  * Icons
  */
+
 gulp.task('icons', function() {
 
   // Set paths
@@ -201,6 +208,7 @@ gulp.task('icons', function() {
 /**
  * SVG
  */
+
 gulp.task('svg', function() {
   const src = paths.dest + 'icons/*.svg'
   const dest = paths.dest + 'svg/'
@@ -219,6 +227,7 @@ gulp.task('svg', function() {
 /**
  * Clean
  */
+
 gulp.task('clean:css', () => {
   return del(paths.dest + 'css')
 })
@@ -246,11 +255,13 @@ gulp.task('clean', () => {
 /**
  * Bulk
  */
+
 gulp.task('all', ['css', 'js', 'img'])
 
 /**
  * Watch
  */
+
 gulp.task('watch', function() {
   gulp.watch(paths.src + 'scss/**/*', ['css'])
   gulp.watch(paths.src + 'js/**/*', ['js'])
@@ -260,4 +271,5 @@ gulp.task('watch', function() {
  * Default
  * Builds everything and then initiates the watch task
  */
+
 gulp.task('default', ['all', 'watch'])
