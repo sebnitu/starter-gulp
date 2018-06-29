@@ -158,7 +158,7 @@ gulp.task('js', ['js:dev', 'js:prod'])
  * Img
  */
 
-gulp.task('img', function() {
+gulp.task('img', () => {
   const src = paths.src + 'img/**/*'
   const dest = paths.dest + 'img/'
   return gulp.src(src)
@@ -170,7 +170,7 @@ gulp.task('img', function() {
  * Icons
  */
 
-gulp.task('icons', function() {
+gulp.task('icons', () => {
 
   // Set paths
   const src = 'node_modules/feather-icons/dist/icons/*.svg'
@@ -217,7 +217,7 @@ gulp.task('icons', function() {
  * Symbols
  */
 
-gulp.task('symbols', function() {
+gulp.task('symbols', () => {
   const src = paths.dest + 'icons/*.svg'
   const dest = paths.dest + 'svg/'
   return gulp.src( src )
@@ -244,15 +244,15 @@ gulp.task('clean:js', () => {
   return del(paths.dest + 'js')
 })
 
-gulp.task('clean:img', function () {
+gulp.task('clean:img', () => {
   return del(paths.dest + 'img')
 })
 
-gulp.task('clean:icons', function () {
+gulp.task('clean:icons', () => {
   return del(paths.dest + 'icons')
 })
 
-gulp.task('clean:svg', function () {
+gulp.task('clean:svg', () => {
   return del(paths.dest + 'svg')
 })
 
@@ -270,7 +270,7 @@ gulp.task('all', ['css', 'js', 'img'])
  * Watch
  */
 
-gulp.task('watch', function() {
+gulp.task('watch', () => {
   gulp.watch(paths.src + 'scss/**/*', ['css'])
   gulp.watch(paths.src + 'js/**/*', ['js'])
 })
