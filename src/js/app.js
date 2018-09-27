@@ -1,5 +1,5 @@
-import component from './component.js'
+import Modal from 'vrembem/src/js/modal.js'
+import Dismissible from 'vrembem/src/js/dismissible.js'
 
-const instance = new component()
-
-instance.init()
+const modal = new Modal()
+const dismissible = new Dismissible()

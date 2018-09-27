@@ -24,7 +24,7 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "babelify": "^8.0.0",
-    "browserify": "^16.2.2",
+    "browserify": "^16.2.3",
     "del": "^3.0.0",
     "feather-icons": "^4.7.3",
     "gulp": "^3.9.1",
@@ -37,7 +37,9 @@
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "gulplog": "^1.0.0",
+    "svgxuse": "^1.2.6",
     "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "vinyl-source-stream": "^2.0.0",
+    "vrembem": "^0.2.50"
   }
 }
