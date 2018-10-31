@@ -2,14 +2,13 @@ import gulp from 'gulp'
 import del from 'del'
 import rename from 'gulp-rename'
 import sourcemaps from 'gulp-sourcemaps'
-import log from 'gulplog'
 
 import browserify from 'browserify'
 import babel from 'babelify'
 import uglify from 'gulp-uglify'
 
-import buffer from 'vinyl-buffer'
 import source from 'vinyl-source-stream'
+import buffer from 'vinyl-buffer'
 
 import config from './_config'
 
@@ -18,18 +17,19 @@ const scripts_clean = () => {
 }
 
 const scripts_dev = () => {
-  const b = browserify({
+  var bundle = browserify({
     entries: config.scripts.src,
-    config: config.scripts.search,
+    paths: config.scripts.search,
     debug: true
   }).transform(babel, {
-    global: true
+    global: true,
+    presets: ['@babel/preset-env']
   })
-  return b.bundle()
+
+  return bundle.bundle()
     .pipe(source(config.scripts.src))
     .pipe(buffer())
     .pipe(sourcemaps.init())
-    .on('error', log.error)
     .pipe(rename({
       dirname: '',
       basename: config.scripts.output,
@@ -40,19 +40,20 @@ const scripts_dev = () => {
 }
 
 const scripts_prod = () => {
-  const b = browserify({
+  var bundle = browserify({
     entries: config.scripts.src,
-    config: config.scripts.search,
+    paths: config.scripts.search,
     debug: true
   }).transform(babel, {
-    global: true
+    global: true,
+    presets: ['@babel/preset-env']
   })
-  return b.bundle()
+
+  return bundle.bundle()
     .pipe(source(config.scripts.src))
     .pipe(buffer())
     .pipe(sourcemaps.init())
     .pipe(uglify())
-    .on('error', log.error)
     .pipe(rename({
       dirname: '',
       basename: config.scripts.output,

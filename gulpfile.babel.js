@@ -1,7 +1,7 @@
 import gulp from 'gulp'
 
 import styles, { styles_watch, styles_clean } from './tasks/styles'
-import scripts, { scripts_watch, scripts_clean } from './tasks/scripts'
+import scripts, { scripts_dev, scripts_watch, scripts_clean } from './tasks/scripts'
 import { img, img_clean } from './tasks/img'
 import { svg, svg_clean } from './tasks/svg'
 import { symbols, symbols_clean } from './tasks/symbols'
@@ -35,6 +35,7 @@ const build = gulp.parallel(
 export {
   styles,
   scripts,
+  scripts_dev,
   img,
   img_clean,
   svg,
