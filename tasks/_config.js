@@ -51,6 +51,7 @@ export default {
   },
 
   feather: {
+    src: 'node_modules/feather-icons/dist/icons/',
     dest: 'dist/icons/'
   }
 }

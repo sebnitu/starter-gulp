@@ -19,7 +19,7 @@ const feather_copy = () => {
   var itemsProcessed = 0
 
   // Get our icons array
-  var icons = fs.readdirSync('node_modules/feather-icons/dist/icons/')
+  var icons = fs.readdirSync(config.feather.src)
 
   // Create the direcotry if it doesn't exist
   if (!fs.existsSync(config.feather.dest)){
