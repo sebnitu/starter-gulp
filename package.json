@@ -46,6 +46,7 @@
     "gulp-svg-symbols": "^3.2.0",
     "gulp-uglify": "^3.0.1",
     "svgxuse": "^1.2.6",
+    "through2": "^2.0.3",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
     "vrembem": "^0.2.71"

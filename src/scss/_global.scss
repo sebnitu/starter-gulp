@@ -1,19 +1,16 @@
 /**
+ * Body
+ */
+
+body {
+  padding: 1.5em;
+  background: $body-background;
+}
+
+/**
  * Required asterisk
  */
 
 .req {
   color: $red;
-}
-
-.primary {
-  background: $primary;
-}
-
-.secondary {
-  background: $secondary;
-}
-
-.accent {
-  background: $accent;
 }
