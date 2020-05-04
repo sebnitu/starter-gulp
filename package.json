@@ -38,7 +38,7 @@
     "del": "^5.0.0",
     "feather-icons": "^4.22.1",
     "gulp": "^4.0.2",
-    "gulp-imagemin": "^6.0.0",
+    "gulp-imagemin": "^7.1.0",
     "gulp-postcss": "^8.0.0",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
