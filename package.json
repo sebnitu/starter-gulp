@@ -36,7 +36,7 @@
     "babelify": "^10.0.0",
     "browserify": "^16.3.0",
     "del": "^5.0.0",
-    "feather-icons": "^4.22.1",
+    "feather-icons": "^4.28.0",
     "gulp": "^4.0.2",
     "gulp-imagemin": "^7.1.0",
     "gulp-postcss": "^8.0.0",
